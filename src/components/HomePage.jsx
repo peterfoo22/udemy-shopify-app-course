@@ -45,7 +45,9 @@ export function HomePage() {
             },
           }}
           fullWidth
-        ></Page>
+        >
+          <ProductList products={products} />
+        </Page>
       ) : (
         <EmptyState
           heading="Manage Your Products You want to Display"

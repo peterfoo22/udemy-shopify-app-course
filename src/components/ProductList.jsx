@@ -1,16 +1,18 @@
 import React from "react";
-import { Card, ResourceList } from "@shopify/polaris";
+import { Card, ResourceItem, ResourceList } from "@shopify/polaris";
 import ProductItem from "./ProductItem";
 
 const ProductList = ({ products }) => {
   return (
     <Card>
-      {/* <ResourceList 
+      <ResourceList 
         showHeader
-        resourceName={{ singular: "Product", plural:"Products" }}
-        items = {products}
-        renderItem={product => <ProductItem product={product} /> }
-      />  */}
+        resourceName={{singular:"Product", plural:"Products"}}
+        items={products}
+        renderItem={product=>{
+          return <ProductItem product = {product} /> 
+        }}
+      /> 
     </Card>
   );
 };
