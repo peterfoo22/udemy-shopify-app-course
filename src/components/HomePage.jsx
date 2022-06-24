@@ -11,15 +11,26 @@ import {
 } from "@shopify/polaris";
 import ProductList from "./ProductList";
 
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 
 import React, { useState } from "react";
 
 import { ResourcePicker } from "@shopify/app-bridge-react";
+import ProductEmptyState from "./ProductEmptyState";
+import ProductPage from "./ProductPage";
 
 export function HomePage() {
   const [isOpen, setIsOpen] = useState(false);
   const [products, setProducts] = useState([]);
+  const [productsID, setProductsID] = useState([]);
+  useEffect(()=>{
+    const ids = products.map(product => {
+      return {
+        id: product.id
+      };
+    })
+    setProductsID(ids);
+  },[products])
 
   const handleProductSelection = (payload) => {
     setIsOpen(false);
@@ -33,32 +44,13 @@ export function HomePage() {
         onCancel={() => setIsOpen(false)}
         onSelection={handleProductSelection}
         open={isOpen}
+        initialSelectionIds={productsID}
       ></ResourcePicker>
 
       {products.length > 0 ? (
-        <Page
-          title="Product Selector"
-          primaryAction={{
-            content: "Select Product",
-            onAction: () => {
-              setIsOpen(true);
-            },
-          }}
-          fullWidth
-        >
-          <ProductList products={products} />
-        </Page>
+        <ProductPage products={products} setIsOpen={setIsOpen}></ProductPage>
       ) : (
-        <EmptyState
-          heading="Manage Your Products You want to Display"
-          action={{
-            content: "Select products",
-            onAction: () => setIsOpen(true),
-          }}
-          image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
-        >
-          <p>Select the products you want to use on your banner</p>
-        </EmptyState>
+        <ProductEmptyState setIsOpen={setIsOpen}></ProductEmptyState>
       )}
     </Fragment>
   );
